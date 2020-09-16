@@ -47,5 +47,5 @@ An example of `getplaylists` and `getsongs`
 
 
 >Why is this on Github and not on Discord's bot list?
-- I would need to host the code on a server, which costs $$$, plus it was really only intended for me to use.
-- I felt like sharing it so that anyone can suggest/add any new functions if they want.
+- I don't really feel like hosting it on a server, plus it was really only intended for me to use.
+- I felt like sharing it so that anyone can suggest any new functions if they want.
