@@ -14,7 +14,7 @@ It functions like any other Discord bot, just type in these functions with a "~"
 - `getlink` : returns the link to specific playlist
 - `getsongs` : returns the songs of a playlist
 - `getplaylists` : returns all playlists
-- `getyt` : returns channel page
+- `getyt` : returns link to channel page
 - `movesong` : moves a song from one place in a playlist to another
 - `removesong` : removes a song from a given playlist
 
