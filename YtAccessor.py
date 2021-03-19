@@ -5,7 +5,7 @@ import math
 import json
 import discord
 
-#this class interfaces with Youtube's Data API to get info for a given youtube account
+# this class interfaces with Youtube's Data API v3 to get and set info for a given youtube account
 
 class YtAccessor():
      
@@ -116,7 +116,7 @@ class YtAccessor():
                 return ':white_check_mark: Playlist "'+playlist_name+'" has been deleted.'
             except Exception as e:
                 print(str(e))
-                return ':x: Hmm... something went wrong on Youtube\'s side. That probably means we\'ve reached our quota for the day or hour or minute.'
+                return ':x: Hmm... something probably went wrong on Youtube\'s side. That probably means we\'ve reached our quota for the day or hour or minute.'
     
   
     
@@ -174,7 +174,7 @@ class YtAccessor():
         if pageNum > maxpages:
             pageNum = maxpages
         
-        pageheader = '`(Page '+str(pageNum)+'/'+str(maxpages)+')`'
+        pageheader = str(pageNum)+'/'+str(maxpages)
         names += '`name : #ofsongs`'
         
         if pageNum == maxpages:
@@ -199,7 +199,7 @@ class YtAccessor():
         playlist_link='https://www.youtube.com/playlist?list='
         desc, thumbnail_url=['',]
         
-        playlists = youtube.playlists().list(part="snippet", maxResults=25, channelId='UCmnEfzR5AkOSHTQ25hKq7qA').execute()
+        playlists = youtube.playlists().list(part="snippet", maxResults=25, channelId='YOUR CHANNEL ID').execute()
         
         for i in range(playlists['pageInfo']['totalResults']):
             if str.lower(playlists['items'][i]['snippet']['title']) == str.lower(playlist_name):
@@ -275,7 +275,7 @@ class YtAccessor():
         global youtube
         names, embedtitle, playlsitId, thumbnailUrl=['',]*4
         maxpage=0
-        playlists = youtube.playlists().list(part="snippet", maxResults=25, channelId='UCmnEfzR5AkOSHTQ25hKq7qA').execute()
+        playlists = youtube.playlists().list(part="snippet", maxResults=25, channelId='YOUR CHANNEL ID').execute()
         
         for i in range(playlists['pageInfo']['totalResults']):
             if str.lower(playlists['items'][i]['snippet']['title']) == str.lower(playlist_name):
@@ -299,7 +299,7 @@ class YtAccessor():
             pagenum = maxpages
         
         embedtitle = '`Songs for "'+playlist_name+'"`'
-        pageId='`(Page '+str(pagenum)+'/'+str(maxpages)+')`'
+        pageId = str(pagenum)+'/'+str(maxpages)
         
         npnum = int(pagenum/5)
         if pagenum%5 == 0:
@@ -468,4 +468,10 @@ class YtAccessor():
             
             except Exception as e:
                 print(str(e))
-                return 'Darn, looks like we\'ve reached our quota for the time being, or there\'s a bug in my code. Check to see how many songs - if any at all - got tranferred over to "'+playlist_name+'", and do the rest yourself if you want.'
+                return ('Darn, looks like we\'ve reached our quota for the time being, or there\'s a bug in my code. Check to see how many songs ' +
+                    '- if any at all - got tranferred over to "'+playlist_name+'", and do the rest yourself if you want.')
+
+
+          
+
+# end          
