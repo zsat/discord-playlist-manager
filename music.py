@@ -114,30 +114,73 @@ class music(commands.Cog):
     #FORMAT: ~getplaylists pagenum
     # *pagenum is optional
     @commands.command(help='lists all playlists')
-    async def getplaylists(self, ctx, *page):
+    async def getplaylists(self, ctx, *page, msg=None):
         global ytaccessor
+        
         pageheader=''
         names=''
         
-        if not page:
-            page=''
+        if not page or page == '':
+            page='1'
         else: 
             page=list(page)[0]
         
-        
         if page != '' and not page.isnumeric():
-            await ctx.send('The only argument you can send is the page number, you said "'+page+'"')
-        else:
-            if page == '':
-                pageheader, names = ytaccessor.get_playlist_names(1)
-            else:
-                pageheader, names = ytaccessor.get_playlist_names(int(page))
+            await ctx.send('The only argument you can send is the page number, '+page+' is invalid')
+            return None
         
-            embed = discord.Embed(title='`bot\'s playlists!`', color=0xc62ec1)
-            embed.add_field(name=pageheader, value=names)
-            await ctx.send(embed=embed)
-                
+        pageId, names = ytaccessor.get_playlist_names(int(page))
+        
+        if msg == None:
+            embed = discord.Embed(title='`the bot\'s playlists!`', color=0xc62ec1)
+            embed.add_field(name='`( Page '+pageId+')`', value=names)
+            msg = await ctx.send(embed=embed)
             
+            # add reactions only on first iteration
+            await msg.add_reaction('⬅️')
+            await asyncio.sleep(.5)
+            await msg.add_reaction('➡️')
+            
+        else:
+            # editing the preexisting field we had that had the page num and songs in it
+            msg.embeds[0].set_field_at(0, name='`(Page '+pageId+')`', value=names)
+            await msg.edit(embed=msg.embeds[0])
+                
+                
+        reaction = ''
+            
+        # now checking for reactions to see if any user wants to go left or right    
+        try:
+            def check(reaction, user):
+                return ((str(reaction.emoji) == '➡️' or str(reaction.emoji) == '⬅️') 
+                    and reaction.message == msg and user.id != "YOUR BOT'S ID") #anyone but the bot reacts
+                
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=15)
+            # cant listen for both an add and remove at the same time, so we'll listen to the add and then remove that user's
+            # reaction so that they're only adding reactions
+            await reaction.remove(user)
+                
+        except asyncio.TimeoutError:
+            msg.embeds[0].set_footer(text = 'No more reactions can be made here.')
+            await msg.edit(embed=msg.embeds[0])       
+            return None # exits the method
+
+        pagedata = pageId.split('/')
+        page = int(pagedata[0])
+        maxpages = int(pagedata[1])
+        
+        # going to reload the embed to adjust for the new page
+        if str(reaction.emoji) == '➡️':
+            if page == maxpages:
+                await self.getplaylists(ctx, '1', msg=msg)
+            else:
+                await self.getplaylists(ctx, str(page+1), msg=msg )
+        elif str(reaction.emoji) == '⬅️':
+            if page == 1:
+                await self.getplaylists(ctx, str(maxpages), msg=msg)
+            else:
+                await self.getplaylists(ctx, str(page-1), msg=msg)
+                        
 
      
     #FORMAT: ~getlink playlistname
@@ -200,28 +243,77 @@ class music(commands.Cog):
         
     
     #FORMAT: ~getsongs playlistname pageNum
-    # *pageNum is optional
-    @commands.command(help='lists songs of a pl; <plName> (optional)-> <page#> ')
-    async def getsongs(self, ctx, *args):
+    # *pageNum is optional  
+    @commands.command(help='lists songs of a pl; (<plName>  *<page#>)')
+    async def getsongs(self, ctx, *args, msg=None):
         global ytaccessor
+        
         args = list(args)
-        embedtitle, names, thumnailUrl, pageId=['',]*4
+        embedtitle, names, thumnailUrl, pageId = ['',]*4
         
         if args[-1].isnumeric():
             page=args.pop(-1)
-            plName = ' '.join(args)
-            embedtitle, names, thumbnailUrl, pageId = ytaccessor.get_songs(playlist_name=plName, pagenum=int(page))                
         else:
-            plName = ' '.join(args)
-            embedtitle, names, thumbnailUrl, pageId = ytaccessor.get_songs(playlist_name=plName, pagenum=1) 
+            page=1
+        
+        plName = ' '.join(args)
+        embedtitle, names, thumbnailUrl, pageId = ytaccessor.get_songs(playlist_name=plName, pagenum=int(page))                
             
         if names == '':
             await ctx.send('That\'s not a valid playlist name')
-        else:
+            return None # nothing else to do
+
+        if msg == None:
             embed = discord.Embed(title=embedtitle, color=0x1abc9c)
             embed.set_thumbnail(url=thumbnailUrl)
-            embed.add_field(name=pageId, value=names)
-            await ctx.send(embed=embed)
+            embed.add_field(name='`(Page '+pageId+')`', value=names)
+            msg = await ctx.send(embed=embed) 
+            
+            # add reactions only on first iteration
+            await msg.add_reaction('⬅️')
+            await asyncio.sleep(.5)
+            await msg.add_reaction('➡️')
+        
+        else:
+            # editing the preexisting field we had that had the page num and songs in it
+            msg.embeds[0].set_field_at(0, name='`(Page '+pageId+')`', value=names)
+            await msg.edit(embed=msg.embeds[0])
+            
+            
+        reaction = ''
+            
+        # now checking for reactions to see if any user wants to go left or right    
+        try:
+            def check(reaction, user):
+                return ((str(reaction.emoji) == '➡️' or str(reaction.emoji) == '⬅️') 
+                    and reaction.message == msg and user.id != "YOUR BOT'S DISCORD ID") #anyone but the bot reacts
+                
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=15)
+            # cant listen for both an add and remove at the same time, so we'll listen to the add and then remove that user's
+            # reaction so that they're only adding reactions
+            await reaction.remove(user)
+                
+        except asyncio.TimeoutError:
+            msg.embeds[0].set_footer(text = 'No more reactions can be made here.')
+            await msg.edit(embed=msg.embeds[0])       
+            return None # exits the method
+
+        pagedata = pageId.split('/')
+        page = int(pagedata[0])
+        maxpages = int(pagedata[1])
+        
+        # going to reload the embed to adjust for the new page
+        if str(reaction.emoji) == '➡️':
+            if page == maxpages:
+                await self.getsongs(ctx, plName, '1', msg=msg)
+            else:
+                await self.getsongs(ctx, plName, str(page+1), msg=msg )
+        elif str(reaction.emoji) == '⬅️':
+            if page == 1:
+                await self.getsongs(ctx, plName, str(maxpages), msg=msg)
+            else:
+                await self.getsongs(ctx, plName, str(page-1), msg=msg)
+
             
      
     
