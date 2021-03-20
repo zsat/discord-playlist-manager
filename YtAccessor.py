@@ -53,7 +53,7 @@ class YtAccessor():
             if str.lower(playlists['items'][i]['snippet']['title']) == str.lower(playlist_name):
                 return '"'+playlists['items'][i]['snippet']['title']+'" already exists! And yes, playlist names are case insensitive.',''
         
-        #uncomment this if you want to store the user id of the person who created the playlist
+        # uncomment this if you want to store the user id of the person who created the playlist
         """
         with open('/whatever/your/directory/is/plistCreators.txt', 'r') as plistCreators:
             creators = json.load(plistCreators)
@@ -164,7 +164,7 @@ class YtAccessor():
         names=''
         maxpages=0
         
-        playlists = youtube.playlists().list(part="snippet,contentDetails", maxResults=50, channelId='UCmnEfzR5AkOSHTQ25hKq7qA').execute()
+        playlists = youtube.playlists().list(part="snippet,contentDetails", maxResults=50, channelId=self.getChannelId()).execute()
         totalResults = playlists['pageInfo']['totalResults']
         if totalResults%10 == 0:
             maxpages = int( math.floor(totalResults/10.0) )
@@ -193,13 +193,16 @@ class YtAccessor():
         return pageheader, names 
     
     
+
+
+
     
     def get_playlist_link(self, playlist_name):
         global youtube
         playlist_link='https://www.youtube.com/playlist?list='
         desc, thumbnail_url=['',]
         
-        playlists = youtube.playlists().list(part="snippet", maxResults=25, channelId='YOUR CHANNEL ID').execute()
+        playlists = youtube.playlists().list(part="snippet", maxResults=25, channelId=self.getChannelId()).execute()
         
         for i in range(playlists['pageInfo']['totalResults']):
             if str.lower(playlists['items'][i]['snippet']['title']) == str.lower(playlist_name):
@@ -210,72 +213,33 @@ class YtAccessor():
                 break
         
         if playlist_link == 'https://www.youtube.com/playlist?list=':
-            playlist_link = 'Bro, the name you sent is invalid. Stop the cringe.'
+            playlist_link = 'The name you sent is invalid.'
         
         return playlist_link, desc, thumbnail_url, playlist_name
         
     
     
+     
+     
+    
     def getChannelId(self):
-        global youtube
-        channel = youtube.channels().list(part='snippet', mine=True).execute()
-        return channel['items'][0]['id']
-    
+        global built, youtube
+     
+        if self.built:
+            channel = youtube.channels().list(part='snippet', mine=True).execute()
+            return channel['items'][0]['id']
+        else:
+            return "THE CHANNEL ID THAT YOU WANT TO BE THE DEFAULT FOR THE BOT"
    
-    
-    def move_song(self, playlist_name, oldpos, newpos):
-        global youtube
-        playlistId=''
-        playlist=''
-        
-        playlists = youtube.playlists().list(part="snippet", maxResults=25, mine=True).execute()
-        
-        for i in range(playlists['pageInfo']['totalResults']):
-            if str.lower(playlists['items'][i]['snippet']['title']) == str.lower(playlist_name):
-                playlist = playlists['items'][i]
-                playlistId = playlists['items'][i]['id']
-                playlist_name = playlists['items'][i]['snippet']['title']
-                break
-        
-        if playlistId == '':
-            return 'That\'s not a valid playlist.'
-        else: 
-            playlistItems = youtube.playlistItems().list(part='snippet', maxResults=100, playlistId=playlistId).execute()
-            totalSongs = playlistItems['pageInfo']['totalResults']
-        
-            if oldpos+1 > totalSongs or newpos+1 > totalSongs:
-                return 'That playlist doesn\'t have that many songs'
-            else:
-                itemId = playlistItems['items'][oldpos]['id']
-                videoId = playlistItems['items'][oldpos]['snippet']['resourceId']['videoId']
-                song_name = playlistItems['items'][oldpos]['snippet']['title']
-            
-                request = youtube.playlistItems().update(
-                    part = 'snippet',
-                    body = {
-                        "id" : itemId,
-                        "snippet" : {
-                            "playlistId" : playlistId,
-                            "position" : newpos,
-                            "resourceId" : {
-                                "kind" : "youtube#video",
-                                "videoId" : videoId
-                            }
-                        }
-                    } ).execute()
-            
-                if len(song_name) > 35:
-                    return '"'+song_name[:35]+'..." has been moved to position '+str(newpos+1)+' in "'+playlist_name+'"'
-                else:
-                    return '"'+song_name+'" has been moved to position '+str(newpos+1)+' in "'+playlist_name+'"'
-    
-    
-    
+     
+     
+     
+     
     def get_songs(self, playlist_name, pagenum):
         global youtube
         names, embedtitle, playlsitId, thumbnailUrl=['',]*4
         maxpage=0
-        playlists = youtube.playlists().list(part="snippet", maxResults=25, channelId='YOUR CHANNEL ID').execute()
+        playlists = youtube.playlists().list(part="snippet", maxResults=25, channelId=self.getChannelId()).execute()
         
         for i in range(playlists['pageInfo']['totalResults']):
             if str.lower(playlists['items'][i]['snippet']['title']) == str.lower(playlist_name):
@@ -330,7 +294,61 @@ class YtAccessor():
                     names += '\n'+str(i+1+(npnum))+'. ['+str(playlistItems['items'][i]['snippet']['title'])+']'
                     names +='(https://www.youtube.com/watch?v='+playlistItems['items'][i]['snippet']['resourceId']['videoId']+')'
         
-        return embedtitle, names, thumbnailUrl, pageId
+        return embedtitle, names, thumbnailUrl, pageId     
+     
+     
+    
+
+
+
+    def move_song(self, playlist_name, oldpos, newpos):
+        global youtube
+        playlistId=''
+        playlist=''
+        
+        playlists = youtube.playlists().list(part="snippet", maxResults=25, mine=True).execute()
+        
+        for i in range(playlists['pageInfo']['totalResults']):
+            if str.lower(playlists['items'][i]['snippet']['title']) == str.lower(playlist_name):
+                playlist = playlists['items'][i]
+                playlistId = playlists['items'][i]['id']
+                playlist_name = playlists['items'][i]['snippet']['title']
+                break
+        
+        if playlistId == '':
+            return 'That\'s not a valid playlist.'
+        else: 
+            playlistItems = youtube.playlistItems().list(part='snippet', maxResults=100, playlistId=playlistId).execute()
+            totalSongs = playlistItems['pageInfo']['totalResults']
+        
+            if oldpos+1 > totalSongs or newpos+1 > totalSongs:
+                return 'That playlist doesn\'t have that many songs'
+            else:
+                itemId = playlistItems['items'][oldpos]['id']
+                videoId = playlistItems['items'][oldpos]['snippet']['resourceId']['videoId']
+                song_name = playlistItems['items'][oldpos]['snippet']['title']
+            
+                request = youtube.playlistItems().update(
+                    part = 'snippet',
+                    body = {
+                        "id" : itemId,
+                        "snippet" : {
+                            "playlistId" : playlistId,
+                            "position" : newpos,
+                            "resourceId" : {
+                                "kind" : "youtube#video",
+                                "videoId" : videoId
+                            }
+                        }
+                    } ).execute()
+            
+                if len(song_name) > 35:
+                    return '"'+song_name[:35]+'..." has been moved to position '+str(newpos+1)+' in "'+playlist_name+'"'
+                else:
+                    return '"'+song_name+'" has been moved to position '+str(newpos+1)+' in "'+playlist_name+'"'
+    
+    
+    
     
             
     #the song_link can be either from a search or a playlist (papa bless google for thinking ahead)
@@ -343,11 +361,9 @@ class YtAccessor():
         
         playlists = youtube.playlists().list(part="snippet", maxResults=25, mine=True).execute()
         videoId = song_link.split('=')[1].split('&')[0]
-            
-        
         
         if len(videoId) != 11:
-            return 'The video id is wrong?'
+            return 'The video id is wrong!'
         
         #user either: 1. only gave a link from a pl; or 2. gave link from pl and a pl name
         elif len(song_link.split('='))>2:
