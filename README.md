@@ -1,6 +1,6 @@
 # discord-playlist-manager
 
-> This discord bot allows you to manage the playlists of a Youtube channel straight from discord.
+> This discord bot allows you to manage the playlists of a Youtube channel straight from Discord.
 ---
 ## What can it do?
 
@@ -47,5 +47,5 @@ An example of `getplaylists` and `getsongs`
 
 
 >Why is this on Github and not on Discord's bot list?
-- I don't really feel like hosting it on a server, plus it was really only intended for me to use.
-- I felt like sharing it so that anyone can suggest any new functions if they want.
+- It's really only intended for me to use, so I don't need to host it on a server.
+- So that anyone can use the code for their own bot / functions.
