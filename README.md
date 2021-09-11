@@ -40,7 +40,7 @@ An example of `getplaylists` and `getsongs`
 
 ---
 
-## FAQ:
+## Q&A:
 
 >What's its purpose?
 - There are many Discord bots that will play songs in voice channels, but there wasn't any easy way for my friends and I to organize what we want to play, so I created this bot.
