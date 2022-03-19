@@ -1,8 +1,14 @@
 # discord-playlist-manager
 
-> This discord bot allows you to manage the playlists of a Youtube channel straight from Discord.
+> This Discord bot allows you to manage the playlists of a Youtube channel straight from Discord. It also joins calls and plays requested music.
 ---
 ## What can it do?
+
+There are 2 main functionalities:
+1. Allowing you to manage Youtube playlists
+2. Playing that music in voice channels
+
+### Playlist Management Functionality
 
 It functions like any other Discord bot, just type in these functions with a "~" in front to control your music:
 
@@ -20,11 +26,31 @@ It functions like any other Discord bot, just type in these functions with a "~"
 
 ***Argument formats are in music.py***
 
+An example of `getplaylists` and `getsongs`, you'll notice that you can iterate over pages of songs/playlists by reacting with the arrows at the bottom. You might also notice the "No more reactions can be made here" footer, which pops up after 30 seconds indicating that the function isn't listening for reactions anymore.
+
+<img src="/readmeimgs/getplaylists.png" width="50%">  <img src="/readmeimgs/getsongs.png" width="50%">
+
 ---
 
-An example of `getplaylists` and `getsongs`
+### Music Player Functionality
 
-<img src="/readmeimgs/getplaylistsimg.png" width="299" height="363">  <img src="/readmeimgs/getsongsimg.png" width="525" height="373">
+You can play requested songs, or add them to the queue to be auto-played later. The bot will handle the rest. This functionality was added because Youtube had sent cease and desists to popular audio-playing bots (like Rythm) that forced them to shut down. This pretty much rendered the playlist management functionality useless, so I created this set of functions so that my friends and I could again listen to music together.
+
+- `connect`: connects bot to user's voice channel
+- `disconnect`: disconnects bot from user's voice channel
+- `play`: auto-connects to channel, plays a song if passed a Youtube url, else tries to play next song in queue
+- `queue`: adds a song to the queue if passed a url argument, else returns the current queue
+- `skip`: skips current song, auto-plays next song in queue
+- `pause`: pauses current song
+- `resume`: resumes current song if paused
+
+***Argument formats are in music_player.py***
+
+Examples of `queue` and the auto-play output when music is playing + what the voice channels look like with bots in them.
+
+<img src="/readmeimgs/invc.png" width="30%"> <img src="/readmeimgs/queue.png" width="50%">
+
+<img src="/readmeimgs/playsong.png" width="30%">
 
 ---
 
@@ -36,16 +62,16 @@ An example of `getplaylists` and `getsongs`
     - `discord`
     - `google-auth-oauthlib`
     - `google-auth-python-client`
-- Read through all the comments to make sure everything is good to go, add the bot to your server, then run bot.py.
+- Read through all the comments to make sure everything is good to go, add the bot to your server, then run `% python3 bot.py`.
 
 ---
 
 ## Q&A:
 
 >What's its purpose?
-- There are many Discord bots that will play songs in voice channels, but there wasn't any easy way for my friends and I to organize what we want to play, so I created this bot.
+- There are (were) many Discord bots that will play songs in voice channels, but there wasn't any easy way for my friends and I to organize what we want to play, so I created this bot.
 
 
 >Why is this on Github and not on Discord's bot list?
-- It's really only intended for me to use, so I don't need to host it on a server.
+- It's mostly just intended for me to use with my friends, plus now with it being able to play Youtube audio in voice channels, I don't want Youtube sending me cease and desists.
 - So that anyone can use the code for their own bot / functions.
