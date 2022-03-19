@@ -1,4 +1,5 @@
 import discord
+import asyncio
 from YtAccessor import YtAccessor
 from discord.ext import commands
 
