@@ -28,7 +28,7 @@ It functions like any other Discord bot, just type in these functions with a "~"
 
 An example of `getplaylists` and `getsongs`, you'll notice that you can iterate over pages of songs/playlists by reacting with the arrows at the bottom. You might also notice the "No more reactions can be made here" footer, which pops up after 30 seconds indicating that the function isn't listening for reactions anymore.
 
-<img src="/readmeimgs/getplaylists.png" width="50%">  <img src="/readmeimgs/getsongs.png" width="50%">
+<img src="/readmeimgs/getplaylists.png" width="25%">  <img src="/readmeimgs/getsongs.png" width="25%">
 
 ---
 
@@ -48,9 +48,9 @@ You can play requested songs, or add them to the queue to be auto-played later. 
 
 Examples of `queue` and the auto-play output when music is playing + what the voice channels look like with bots in them.
 
-<img src="/readmeimgs/invc.png" width="30%"> <img src="/readmeimgs/queue.png" width="50%">
+<img src="/readmeimgs/queue.png" width="25%"> <img src="/readmeimgs/invc.png" width="10%">
 
-<img src="/readmeimgs/playsong.png" width="30%">
+<img src="/readmeimgs/playsong.png" width="50%">
 
 ---
 
