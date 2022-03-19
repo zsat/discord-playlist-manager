@@ -1,14 +1,10 @@
 # discord-playlist-manager
 
-> This Discord bot allows you to manage the playlists of a Youtube channel straight from Discord. It also joins calls and plays requested music.
+> This Discord bot has 2 main funtionalities: (1) allowing you to manage the playlists of a Youtube channel straight from Discord, and (2) joining voice calls and playing requested music.
+
 ---
-## What can it do?
 
-There are 2 main functionalities:
-1. Allowing you to manage Youtube playlists
-2. Playing that music in voice channels
-
-### Playlist Management Functionality
+## Playlist Management Functionality
 
 It functions like any other Discord bot, just type in these functions with a "~" in front to control your music:
 
@@ -32,7 +28,9 @@ An example of `getplaylists` and `getsongs`, you'll notice that you can iterate 
 
 ---
 
-### Music Player Functionality
+## Music Player Functionality
+
+<img src="/readmeimgs/invc.png" width="15%">
 
 You can play requested songs, or add them to the queue to be auto-played later. The bot will handle the rest. This functionality was added because Youtube had sent cease and desists to popular audio-playing bots (like Rythm) that forced them to shut down. This pretty much rendered the playlist management functionality useless, so I created this set of functions so that my friends and I could again listen to music together.
 
@@ -46,9 +44,9 @@ You can play requested songs, or add them to the queue to be auto-played later. 
 
 ***Argument formats are in music_player.py***
 
-Examples of `queue` and the auto-play output when music is playing + what the voice channels look like with bots in them.
+Examples of `queue`, `play`, and the auto-play output when music is playing.
 
-<img src="/readmeimgs/queue.png" width="40%"> <img src="/readmeimgs/invc.png" width="20%">
+<img src="/readmeimgs/queue.png" width="40%">
 
 <img src="/readmeimgs/playsong.png" width="50%">
 
