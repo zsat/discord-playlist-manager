@@ -44,11 +44,11 @@ You can play requested songs, or add them to the queue to be auto-played later. 
 
 ***Argument formats are in music_player.py***
 
-Examples of `queue`, `play`, and the auto-play output when music is playing.
-
-<img src="/readmeimgs/queue.png" width="40%">
-
+An example of the most common `play` use case:
 <img src="/readmeimgs/playsong.png" width="50%">
+
+An example of `queue` and the auto-play output when music is playing.
+<img src="/readmeimgs/queue.png" width="40%">
 
 ---
 
