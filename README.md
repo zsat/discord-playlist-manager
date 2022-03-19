@@ -48,7 +48,7 @@ An example of the most common `play` use case:
 
 <img src="/readmeimgs/playsong.png" width="50%">
 
-An example of `queue` and the auto-play output when music is playing:
+An example of `queue` and the auto-play output that is outputted when new songs start playing, also notice the total time counter in the queue:
 
 <img src="/readmeimgs/queue.png" width="40%">
 
