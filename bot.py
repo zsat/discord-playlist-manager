@@ -1,5 +1,3 @@
-import discord
-import asyncio
 from discord.ext import commands
 
 TOKEN = 'token for this bot in https://discord.com/developers/applications within the "bot" tab'
@@ -7,7 +5,7 @@ TOKEN = 'token for this bot in https://discord.com/developers/applications withi
 #this is the flag that our bot will respond too
 bot = commands.Bot(command_prefix='~')
 
-startup_extensions = ["music",]
+startup_extensions = ["music", "music_player"]
 
 @bot.event
 async def on_ready():
