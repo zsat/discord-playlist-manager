@@ -62,6 +62,7 @@ An example of `queue` and the auto-play output that is outputted when new songs 
     - `discord`
     - `google-auth-oauthlib`
     - `google-auth-python-client`
+    - `PyNaCl` (for joinging vc's)
 - Read through all the comments to make sure everything is good to go, add the bot to your server, then run `% python3 bot.py`.
 
 ---
@@ -72,6 +73,6 @@ An example of `queue` and the auto-play output that is outputted when new songs 
 - There are (were) many Discord bots that will play songs in voice channels, but there wasn't any easy way for my friends and I to organize what we want to play, so I created this bot.
 
 
->Why is this on Github and not on Discord's bot list?
-- It's mostly just intended for me to use with my friends, plus now with it being able to play Youtube audio in voice channels, I don't want Youtube sending me cease and desists.
+>Why on Github and not on Discord's bot list?
+- It's mostly just intended for me to use with my friends, and Youtube is sending cease and desists to bot creators that play their music
 - So that anyone can use the code for their own bot / functions.
